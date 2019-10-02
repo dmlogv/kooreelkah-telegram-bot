@@ -5,10 +5,19 @@ Be careful.
 
 Very.
 """
-from helpers import Answer, Member, Group
+from datetime import time
+
+from telegram.ext.jobqueue import Days
+
+from helpers import Answer, Member, Group, ScheduledMessage
+
 
 # Telegram Bot Token. Ask @BotFather if you have any questions.
 TOKEN = ''
+
+# Id of the main chat (for boring daily routines)
+CHAT = 0
+
 
 # Explicitly create chat members for an interaction with them.
 # Use charactonyms! (And see config.example.py)
@@ -27,3 +36,7 @@ GROUPS = [all, admins]
 
 # Simple answers to react on user messages
 ANSWERS = [Answer()]
+
+
+# Scheduled messages
+SCHEDULED = [ScheduledMessage(CHAT)]

@@ -1,7 +1,8 @@
 import logging
 import re
 
-from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
+from telegram import ParseMode
+from telegram.ext import CommandHandler, Filters, MessageHandler, Updater, CallbackContext
 
 try:
     import config
@@ -50,6 +51,18 @@ def create_answer_handler(answer):
     return answer_handler
 
 
+def create_scheduled_handler(schedule):
+    def scheduled_handler(context: CallbackContext):
+        if schedule.group:
+            text = f'{schedule.group.mention_all()} {schedule.text}'
+        else:
+            text = schedule.text
+
+        context.bot.send_message(schedule.chat_id, text, parse_mode=ParseMode.MARKDOWN)
+
+    return scheduled_handler
+
+
 def main():
     updater = Updater(token=config.TOKEN, use_context=True)
     dispatcher = updater.dispatcher
@@ -69,6 +82,11 @@ def main():
     for answer in config.ANSWERS:
         dispatcher.add_handler(MessageHandler(
             Filters.regex(answer.regex), create_answer_handler(answer)))
+
+    # Init scheduled messages
+    for scheduled in config.SCHEDULED:
+        updater.job_queue.run_daily(
+            create_scheduled_handler(scheduled), scheduled.time, scheduled.days)
 
     updater.start_polling()
     updater.idle()
