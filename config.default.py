@@ -5,7 +5,7 @@ Be careful.
 
 Very.
 """
-from helpers import Member
+from helpers import Member, Group
 
 # Telegram Bot Token. Ask @BotFather if you have any questions.
 TOKEN = ''
@@ -15,3 +15,11 @@ TOKEN = ''
 admin = Member()
 
 MEMBERS = []
+
+
+# Create some groups for your members
+all = Group()
+admins = Group()
+
+# Don't forget to add it to GROUPS list
+GROUPS = [all, admins]

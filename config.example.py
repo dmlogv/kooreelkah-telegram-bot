@@ -5,7 +5,7 @@ Be careful.
 
 Very.
 """
-from helpers import Member
+from helpers import Member, Group
 
 # Telegram Bot Token. Ask @BotFather if you have any questions.
 TOKEN = '107886057:BAHQGP58QAJeyQzrWRM6HiSWfWVPDkJfBjE'
@@ -19,3 +19,11 @@ GérardDepardieu = Member(2019234)
 李舜臣 = Member(59123412)
 
 MEMBERS = [RobertMartin, DavidBowie, НиколайКолмогоров, GérardDepardieu, 李舜臣]
+
+
+# Create some group for your members
+all = Group(['a', 'all'], 'Hey guys!', *MEMBERS)
+actors = Group(['act', 'actors'], 'Hey actors,', DavidBowie, GérardDepardieu)
+
+# Don't forget to add it to GROUPS list
+GROUPS = [all, actors]
