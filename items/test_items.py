@@ -1,6 +1,7 @@
 import unittest
 
-from helpers import split_chars, Member, Group
+from .group import split_chars, Group
+from .member import Member
 
 
 class SplitCharsTest(unittest.TestCase):

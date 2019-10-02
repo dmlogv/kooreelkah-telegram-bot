@@ -1,6 +1,4 @@
-import re
-
-from telegram.ext.jobqueue import Days
+from .member import Member
 
 
 def split_chars(s, maxsplit=None):
@@ -11,23 +9,6 @@ def split_chars(s, maxsplit=None):
         chars = chars[:maxsplit] + [''.join(chars[maxsplit:])]
 
     return chars
-
-
-class Chat:
-    """Telegram chat config item"""
-    def __init__(self, chat_id):
-        self.chat_id = chat_id
-
-
-class Member(Chat):
-    """Telegram chat member"""
-
-    def as_link(self, text):
-        """Get Telegram mention link
-
-        Args:
-            text: Link text"""
-        return f'[{text}](tg://user?id={self.chat_id})'
 
 
 class Group:
@@ -60,29 +41,3 @@ class Group:
         phrase_chars = split_chars(self.phrase, maxsplit=max_len - 1)
         links = [m.as_link(c) for m, c in zip(self.members, phrase_chars)]
         return ''.join(links)
-
-
-class Answer:
-    """Simple answer on user messages, matching with a regular expression"""
-    def __init__(self, regex, text, flags=re.IGNORECASE):
-        self.regex = re.compile(regex, flags=flags)
-        self.text = text
-
-
-class ScheduledMessage:
-    """Send message to specific chat by a schedule
-
-    Args:
-        chat_id: Specific chat.
-        text: Text you want to send.
-        time (datetime.time): Time to send message.
-        days (tuple[int], int): Days of week.
-            Use telegram.ext.jobqueue.Days
-        group (Group): mention group
-    """
-    def __init__(self, chat_id, text, time, days=Days.EVERY_DAY, group=None):
-        self.chat_id = chat_id
-        self.text = text
-        self.time = time
-        self.days = days if type(days) == tuple else (days,)
-        self.group = group
