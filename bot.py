@@ -12,19 +12,19 @@ except ImportError:
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
 
-def start(update, context):
+def start_handler(update, context):
     update.message.reply_text('Hi all')
 
 
-def ping(update, context):
+def ping_handler(update, context):
     update.message.reply_text('Nope')
 
 
-def help(update, context):
+def help_handler(update, context):
     update.message.reply_text('Help message')
 
 
-def error(update, context):
+def error_handler(update, context):
     logging.error(update, context.error)
 
 
@@ -67,11 +67,11 @@ def main():
     updater = Updater(token=config.TOKEN, use_context=True)
     dispatcher = updater.dispatcher
 
-    dispatcher.add_handler(CommandHandler('start', start))
-    dispatcher.add_handler(CommandHandler('ping', ping))
-    dispatcher.add_handler(CommandHandler('help', help))
+    dispatcher.add_handler(CommandHandler('start', start_handler))
+    dispatcher.add_handler(CommandHandler('ping', ping_handler))
+    dispatcher.add_handler(CommandHandler('help', help_handler))
 
-    dispatcher.add_error_handler(error)
+    dispatcher.add_error_handler(error_handler)
 
     # Init mention group commands
     for group in config.GROUPS:
