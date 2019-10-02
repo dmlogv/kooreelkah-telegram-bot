@@ -1,3 +1,5 @@
+from telegram.ext import CommandHandler
+
 from .member import Member
 
 
@@ -9,6 +11,28 @@ def split_chars(s, maxsplit=None):
         chars = chars[:maxsplit] + [''.join(chars[maxsplit:])]
 
     return chars
+
+
+def init_groups(dispatcher, groups):
+    for group in groups:
+        dispatcher.add_handler(CommandHandler(
+            group.commands, create_group_handler(group)))
+
+
+def create_group_handler(group):
+    def group_handler(update, context):
+        mention = group.mention_all()
+        text = ' '.join(context.args)
+
+        update.message.reply_markdown(
+            f'{mention} {text}',
+            quote=False,
+            forward_from_message_id=update.message.forward_from_message_id)
+
+        if group.remove_command_message:
+            update.message.delete()
+
+    return group_handler
 
 
 class Group:

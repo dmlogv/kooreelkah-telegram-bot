@@ -3,6 +3,8 @@ import logging
 from telegram import ParseMode
 from telegram.ext import CommandHandler, Filters, MessageHandler, Updater, CallbackContext
 
+from items.group import init_groups
+
 try:
     import config
 except ImportError:
@@ -25,28 +27,6 @@ def help_handler(update, context):
 
 def error_handler(update, context):
     logging.error(update, context.error)
-
-
-def init_groups(dispatcher, groups):
-    for group in groups:
-        dispatcher.add_handler(CommandHandler(
-            group.commands, create_group_handler(group)))
-
-
-def create_group_handler(group):
-    def group_handler(update, context):
-        mention = group.mention_all()
-        text = ' '.join(context.args)
-
-        update.message.reply_markdown(
-            f'{mention} {text}',
-            quote=False,
-            forward_from_message_id=update.message.forward_from_message_id)
-
-        if group.remove_command_message:
-            update.message.delete()
-
-    return group_handler
 
 
 def init_answers(dispatcher, answers):
