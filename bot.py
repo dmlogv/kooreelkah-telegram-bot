@@ -1,8 +1,9 @@
 import logging
 
 from telegram import ParseMode
-from telegram.ext import CommandHandler, Filters, MessageHandler, Updater, CallbackContext
+from telegram.ext import CommandHandler, Updater, CallbackContext
 
+from items.answer import init_answers
 from items.group import init_groups
 
 try:
@@ -27,19 +28,6 @@ def help_handler(update, context):
 
 def error_handler(update, context):
     logging.error(update, context.error)
-
-
-def init_answers(dispatcher, answers):
-    for answer in answers:
-        dispatcher.add_handler(MessageHandler(
-            Filters.regex(answer.regex), create_answer_handler(answer)))
-
-
-def create_answer_handler(answer):
-    def answer_handler(update, context):
-        update.message.reply_markdown(answer.text)
-
-    return answer_handler
 
 
 def init_scheduled_messages(job_queue, scheduled):
