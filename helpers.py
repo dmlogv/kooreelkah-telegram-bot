@@ -33,8 +33,10 @@ class Group:
         phrase: Phrase will be used to mention members.
             len(phrase) must be equal or grater than len(members)
         members (list[Member]): members of group
+        remove_command_message (bool): Message with the command will be removed.
+            Requires admin privileges.
     """
-    def __init__(self, commands, phrase, *members):
+    def __init__(self, commands, phrase, *members, remove_command_message=True):
         if not (type(commands) in (str, list)):
             raise ValueError('Group command must be str or list')
         if not all(isinstance(m, Member) for m in members):
@@ -45,6 +47,7 @@ class Group:
         self.commands = commands
         self.phrase = phrase
         self.members = members
+        self.remove_command_message = remove_command_message
 
     def mention_all(self):
         """Uses phrase to build TG mention link"""

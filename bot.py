@@ -37,6 +37,9 @@ def create_group_handler(group):
             quote=False,
             forward_from_message_id=update.message.forward_from_message_id)
 
+        if group.remove_command_message:
+            update.message.delete()
+
     return group_handler
 
 
