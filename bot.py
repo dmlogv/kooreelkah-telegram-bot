@@ -55,7 +55,8 @@ def main():
 
     # Init mention group commands
     for group in config.GROUPS:
-        dispatcher.add_handler(CommandHandler(group.commands, create_group_handler(group)))
+        dispatcher.add_handler(CommandHandler(
+            group.commands, create_group_handler(group)))
 
     updater.start_polling()
     updater.idle()
