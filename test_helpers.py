@@ -1,6 +1,26 @@
 import unittest
 
-from helpers import Member, Group
+from helpers import split_chars, Member, Group
+
+
+class SplitCharsTest(unittest.TestCase):
+    def test_just_split(self):
+        self.assertListEqual(['H', 'i', ',', ' ', 'a', 'l', 'l', '!'],
+                             split_chars('Hi, all!'))
+
+    def test_split_maxsplit(self):
+        self.assertListEqual(['H', 'i, all!'],
+                             split_chars('Hi, all!', maxsplit=1))
+        self.assertListEqual(['H', 'i', ', all!'],
+                             split_chars('Hi, all!', maxsplit=2))
+
+    def test_split_corner_maxsplits(self):
+        self.assertListEqual(['H', 'i', ',', ' ', 'a', 'l', 'l', '!'],
+                             split_chars('Hi, all!', maxsplit=-1))
+        self.assertListEqual(['H', 'i', ',', ' ', 'a', 'l', 'l', '!'],
+                             split_chars('Hi, all!', maxsplit=0))
+        self.assertListEqual(['H', 'i', ',', ' ', 'a', 'l', 'l', '!'],
+                             split_chars('Hi, all!', maxsplit=100))
 
 
 class MemberTest(unittest.TestCase):

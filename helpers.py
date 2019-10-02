@@ -1,3 +1,13 @@
+def split_chars(s, maxsplit=None):
+    chars = list(s)
+
+    if maxsplit:
+        maxsplit = min(maxsplit, len(s) - 1)
+        chars = chars[:maxsplit] + [''.join(chars[maxsplit:])]
+
+    return chars
+
+
 class Chat:
     """Telegram chat config item"""
     def __init__(self, chat_id):
