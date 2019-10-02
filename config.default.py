@@ -11,7 +11,7 @@ from helpers import Member
 TOKEN = ''
 
 # Explicitly create chat members for an interaction with them.
-# Use charactonyms!
+# Use charactonyms! (And see config.example.py)
 admin = Member()
 
 MEMBERS = []
