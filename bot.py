@@ -27,6 +27,12 @@ def error_handler(update, context):
     logging.error(update, context.error)
 
 
+def init_groups(dispatcher, groups):
+    for group in groups:
+        dispatcher.add_handler(CommandHandler(
+            group.commands, create_group_handler(group)))
+
+
 def create_group_handler(group):
     def group_handler(update, context):
         mention = group.mention_all()
@@ -43,11 +49,23 @@ def create_group_handler(group):
     return group_handler
 
 
+def init_answers(dispatcher, answers):
+    for answer in answers:
+        dispatcher.add_handler(MessageHandler(
+            Filters.regex(answer.regex), create_answer_handler(answer)))
+
+
 def create_answer_handler(answer):
     def answer_handler(update, context):
         update.message.reply_markdown(answer.text)
 
     return answer_handler
+
+
+def init_scheduled_messages(job_queue, scheduled):
+    for scheduled in scheduled:
+        job_queue.run_daily(
+            create_scheduled_handler(scheduled), scheduled.time, scheduled.days)
 
 
 def create_scheduled_handler(schedule):
@@ -72,20 +90,9 @@ def main():
 
     dispatcher.add_error_handler(error_handler)
 
-    # Init mention group commands
-    for group in config.GROUPS:
-        dispatcher.add_handler(CommandHandler(
-            group.commands, create_group_handler(group)))
-
-    # Init simple answers handlers
-    for answer in config.ANSWERS:
-        dispatcher.add_handler(MessageHandler(
-            Filters.regex(answer.regex), create_answer_handler(answer)))
-
-    # Init scheduled messages
-    for scheduled in config.SCHEDULED:
-        updater.job_queue.run_daily(
-            create_scheduled_handler(scheduled), scheduled.time, scheduled.days)
+    init_groups(dispatcher, config.GROUPS)
+    init_answers(dispatcher, config.ANSWERS)
+    init_scheduled_messages(updater.job_queue, config.SCHEDULED)
 
     updater.start_polling()
     updater.idle()
