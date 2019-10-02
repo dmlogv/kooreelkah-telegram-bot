@@ -3,6 +3,14 @@ import unittest
 from helpers import Member, Group
 
 
+class MemberTest(unittest.TestCase):
+    def setUp(self):
+        self.mike = Member(1234)
+
+    def test_as_link(self):
+        self.assertEqual('[Mike](tg://user?id=1234)', self.mike.as_link('Mike'))
+
+
 class GroupInitTest(unittest.TestCase):
     def setUp(self):
         self.members = [Member(123), Member(456), Member(789)]
