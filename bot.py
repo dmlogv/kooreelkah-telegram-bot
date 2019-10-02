@@ -1,6 +1,6 @@
 import logging
 
-from telegram.ext import CommandHandler, Updater
+from telegram.ext import Updater
 
 from items.answer import init_answers
 from items.group import init_groups

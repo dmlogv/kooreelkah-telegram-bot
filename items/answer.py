@@ -10,7 +10,7 @@ def init_answers(dispatcher, answers):
 
 
 def create_answer_handler(answer):
-    def answer_handler(update, context):
+    def answer_handler(update, _):
         update.message.reply_markdown(answer.text)
 
     return answer_handler
