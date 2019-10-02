@@ -1,4 +1,24 @@
+from telegram import ParseMode
+from telegram.ext import CallbackContext
 from telegram.ext.jobqueue import Days
+
+
+def init_scheduled_messages(job_queue, scheduled):
+    for scheduled in scheduled:
+        job_queue.run_daily(
+            create_scheduled_handler(scheduled), scheduled.time, scheduled.days)
+
+
+def create_scheduled_handler(schedule):
+    def scheduled_handler(context: CallbackContext):
+        if schedule.group:
+            text = f'{schedule.group.mention_all()} {schedule.text}'
+        else:
+            text = schedule.text
+
+        context.bot.send_message(schedule.chat_id, text, parse_mode=ParseMode.MARKDOWN)
+
+    return scheduled_handler
 
 
 class ScheduledMessage:

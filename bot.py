@@ -1,10 +1,10 @@
 import logging
 
-from telegram import ParseMode
-from telegram.ext import CommandHandler, Updater, CallbackContext
+from telegram.ext import CommandHandler, Updater
 
 from items.answer import init_answers
 from items.group import init_groups
+from items.scheduled import init_scheduled_messages
 
 try:
     import config
@@ -28,24 +28,6 @@ def help_handler(update, context):
 
 def error_handler(update, context):
     logging.error(update, context.error)
-
-
-def init_scheduled_messages(job_queue, scheduled):
-    for scheduled in scheduled:
-        job_queue.run_daily(
-            create_scheduled_handler(scheduled), scheduled.time, scheduled.days)
-
-
-def create_scheduled_handler(schedule):
-    def scheduled_handler(context: CallbackContext):
-        if schedule.group:
-            text = f'{schedule.group.mention_all()} {schedule.text}'
-        else:
-            text = schedule.text
-
-        context.bot.send_message(schedule.chat_id, text, parse_mode=ParseMode.MARKDOWN)
-
-    return scheduled_handler
 
 
 def main():
