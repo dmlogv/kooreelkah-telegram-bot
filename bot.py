@@ -43,6 +43,13 @@ def create_group_handler(group):
     return group_handler
 
 
+def create_answer_handler(answer):
+    def answer_handler(update, context):
+        update.message.reply_markdown(answer.text)
+
+    return answer_handler
+
+
 def main():
     updater = Updater(token=config.TOKEN, use_context=True)
     dispatcher = updater.dispatcher
@@ -57,6 +64,11 @@ def main():
     for group in config.GROUPS:
         dispatcher.add_handler(CommandHandler(
             group.commands, create_group_handler(group)))
+
+    # Init simple answers handlers
+    for answer in config.ANSWERS:
+        dispatcher.add_handler(MessageHandler(
+            Filters.regex(answer.regex), create_answer_handler(answer)))
 
     updater.start_polling()
     updater.idle()

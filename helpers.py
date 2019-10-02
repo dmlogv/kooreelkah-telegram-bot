@@ -1,3 +1,6 @@
+import re
+
+
 def split_chars(s, maxsplit=None):
     chars = list(s)
 
@@ -55,3 +58,10 @@ class Group:
         phrase_chars = split_chars(self.phrase, maxsplit=max_len - 1)
         links = [m.as_link(c) for m, c in zip(self.members, phrase_chars)]
         return ''.join(links)
+
+
+class Answer:
+    """Simple answer on user messages, matching with a regular expression"""
+    def __init__(self, regex, text, flags=re.IGNORECASE):
+        self.regex = re.compile(regex, flags=flags)
+        self.text = text

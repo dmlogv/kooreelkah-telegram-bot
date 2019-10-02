@@ -5,7 +5,7 @@ Be careful.
 
 Very.
 """
-from helpers import Member, Group
+from helpers import Answer, Member, Group
 
 # Telegram Bot Token. Ask @BotFather if you have any questions.
 TOKEN = '107886057:BAHQGP58QAJeyQzrWRM6HiSWfWVPDkJfBjE'
@@ -27,3 +27,8 @@ actors = Group(['act', 'actors'], 'Hey actors,', DavidBowie, GérardDepardieu)
 
 # Don't forget to add it to GROUPS list
 GROUPS = [all, actors]
+
+
+# Simple answers to react on user messages
+ANSWERS = [Answer(r'[A-ZА-Я]{4,}', 'Don`t scream at us!', flags=0),
+           Answer(r'\bNo\W*$', 'Got no.')]
