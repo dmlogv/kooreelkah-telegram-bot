@@ -56,3 +56,20 @@ class GroupInitTest(unittest.TestCase):
             Group('m', 'phrase', None)
         with self.assertRaises(ValueError):
             Group('m', 'phrase', Member(123), 1, Member(456))
+
+
+class GroupMentionTest(unittest.TestCase):
+    def setUp(self):
+        self.members = [Member(123), Member(456), Member(789)]
+
+    def test_equal_phrase(self):
+        expected = ('[H](tg://user?id=123)'
+                    '[i](tg://user?id=456)'
+                    '[,](tg://user?id=789)')
+        self.assertEqual(expected, Group('a', 'Hi,', *self.members).mention_all())
+
+    def test_greater_phrase(self):
+        expected = ('[H](tg://user?id=123)'
+                    '[i](tg://user?id=456)'
+                    '[, all](tg://user?id=789)')
+        self.assertEqual(expected, Group('a', 'Hi, all', *self.members).mention_all())

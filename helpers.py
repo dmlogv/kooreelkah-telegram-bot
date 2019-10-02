@@ -45,3 +45,10 @@ class Group:
         self.commands = commands
         self.phrase = phrase
         self.members = members
+
+    def mention_all(self):
+        """Uses phrase to build TG mention link"""
+        max_len = len(self.members)
+        phrase_chars = split_chars(self.phrase, maxsplit=max_len - 1)
+        links = [m.as_link(c) for m, c in zip(self.members, phrase_chars)]
+        return ''.join(links)
