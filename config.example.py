@@ -9,7 +9,7 @@ from datetime import time
 
 from telegram.ext.jobqueue import Days
 
-from items import Answer, Member, Group, ScheduledMessage
+from items import AlternativeString, Answer, Member, Group, ScheduledMessage
 
 
 # Telegram Bot Token. Ask @BotFather if you have any questions.
@@ -40,7 +40,7 @@ GROUPS = [all, actors]
 
 # Simple answers to react on user messages
 ANSWERS = [Answer(r'[A-ZА-Я]{4,}', 'Don`t scream at us!', flags=0),
-           Answer(r'\bNo\W*$', 'Got no.')]
+           Answer(r'\bNo\W*$', AlternativeString('Got no.', 'Have no.', 'Chuck No.'))]
 
 
 # Scheduled messages

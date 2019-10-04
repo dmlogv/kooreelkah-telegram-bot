@@ -1,3 +1,4 @@
+import random
 import re
 
 from telegram.ext import MessageHandler, Filters
@@ -20,4 +21,21 @@ class Answer:
     """Simple answer on user messages, matching with a regular expression"""
     def __init__(self, regex, text, flags=re.IGNORECASE):
         self.regex = re.compile(regex, flags=flags)
-        self.text = text
+        self.text = str(text)
+
+
+class AlternativeString:
+    """Choose random string
+
+    Examples:
+        > alt = AlternativeString('Hi!', 'Hello!', 'How are you?')
+        > print(alt)
+        Hello!
+        > print(alt)
+        Hi!
+    """
+    def __init__(self, *s):
+        self.strings = s
+
+    def __str__(self):
+        return random.choice(self.strings)
